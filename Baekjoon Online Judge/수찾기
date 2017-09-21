@@ -1,8 +1,8 @@
 #include<stdio.h>
 
-int arr1[100001], arr2[100001];
-int i,j;
-int n,m;
+
+int i, j;
+int n, m;
 void quickSort(int numbers[], int array_size);
 void q_sort(int numbers[], int left, int right);
 
@@ -11,7 +11,7 @@ void q_sort(int numbers[], int left, int right);
 void Bubble_sort(int ar[], int len) {
 	int temp;
 	for (i = 0; i < len; i++) {
-		for (j = 0; j < len-1; j++) {
+		for (j = 0; j < len - 1; j++) {
 			if (ar[j] > ar[j + 1]) {
 				temp = ar[j];
 				ar[j] = ar[j + 1];
@@ -19,7 +19,7 @@ void Bubble_sort(int ar[], int len) {
 			}
 		}
 	}
-}
+} // bubble_sort is very slow...
 
 int BSearch(int ar[], int len, int target) {
 	int first = 0;
@@ -47,8 +47,8 @@ int BSearch(int ar[], int len, int target) {
 
 int main(int arc, char** arg) {
 	int idx;
-
-	scanf("%d",&n);
+	int arr1[100001], arr2[100001];
+	scanf("%d", &n);
 
 	for (i = 0; i < n; i++) {
 		scanf("%d", &arr1[i]);
@@ -59,10 +59,11 @@ int main(int arc, char** arg) {
 	for (i = 0; i < m; i++) {
 		scanf("%d", &arr2[i]);
 	}
-	quickSort(arr1, sizeof(arr1) / sizeof(int));
+	quickSort(arr1, n);
+	
 	//Bubble_sort(arr1,sizeof(arr1)/ sizeof(int));
 	for (i = 0; i < m; i++) {
-		idx = BSearch(arr1, sizeof(arr1) / sizeof(int), arr2[i]);
+		idx = BSearch(arr1, n, arr2[i]);
 		printf("%d\n", idx);
 	}
 	return 0;

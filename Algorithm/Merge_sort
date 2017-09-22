@@ -1,0 +1,73 @@
+/*
+Merge_sort
+*/
+
+#include<iostream>
+#define N 100 // arr size
+int tmp[N]; // 두 배열이 합병될 배열
+
+using namespace std;
+
+void ArrayMerge(int start, int end, int *arr);
+void MergeSort(int start, int end, int*arr);
+
+int main() {
+	int arr[N];
+	//랜덤배열 생성
+	for (int j = 0; j < N; j++)
+		arr[j] = rand() % 999 + 1;
+
+	//기존배열 출력
+	for (int i = 0; i < N; i++)
+		cout << arr[i] << " ";
+	cout << endl << endl;
+	
+	//합병정렬 실행
+	MergeSort(0, N - 1, arr);
+
+	for (int i = 0; i < N; i++)
+		cout << arr[i] << " ";
+	cout << endl << endl;
+	return 0;
+}
+
+void ArrayMerge(int start, int end, int *arr) {
+	// 두 배열의 병합함수
+	int mid = (start + end) / 2;
+
+	int i = start;
+	int j = mid + 1;
+	int k = start;
+
+	while (i <= mid && j <= end) {
+		if (arr[i] <= arr[j]) {
+			tmp[k] = arr[i];
+			i++;	
+		}
+		else {
+			tmp[k] = arr[j];
+			j++;
+		}
+		k++;
+	}
+	int t;
+	if (i > mid)
+		t = j;
+	else
+		t = i;
+	for (k; k <= end; k++, t++)
+		tmp[k] = arr[t];
+	for (k = 0; k <= end; k++)
+		arr[k] = tmp[k];
+}
+
+void MergeSort(int start, int end, int*arr) {
+	// 여기서는 분할하고 ArrayMerge로 보낸다
+	int mid;
+	if (start < end) {
+		mid = (start + end) / 2;
+		MergeSort(start, mid, arr);  // 배열의 왼쪽
+		MergeSort(mid+1, end, arr);  // 배열의 오른쪽 
+		ArrayMerge(start, end, arr); // 병합
+	}
+}

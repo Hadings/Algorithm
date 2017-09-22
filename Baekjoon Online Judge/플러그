@@ -1,0 +1,16 @@
+#include<stdio.h>
+
+int main() {
+	int n;
+	int result = 0;
+	int add;
+	scanf("%d", &n);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &add);
+		result += add;
+	}
+
+	printf("%d\n", result - n + 1);
+	return 0;
+}

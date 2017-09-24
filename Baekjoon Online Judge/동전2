@@ -1,0 +1,32 @@
+/*
+동전2
+
+2294번
+*/
+
+#include<stdio.h>
+
+int n, k;
+int arr[100];
+int Dp[10001];
+
+int min(int a, int b) { return a > b ? b : a; }
+
+int main() {
+	scanf("%d %d", &n, &k);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &arr[i]);
+	}
+
+	for (int i = 1; i <= k; i++) {
+		Dp[i] = 9999999;
+		for (int j = 0; j < n; j++) {
+			if ((i - arr[j]) >= 0 && Dp[i - arr[j]] != 9999999)
+				Dp[i] = min(Dp[i], Dp[i - arr[j]] + 1);
+		}
+	}
+	printf("%d\n", Dp[k] == 9999999 ? -1 : Dp[k]);
+
+	return 0;
+}

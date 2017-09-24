@@ -1,0 +1,28 @@
+/* 
+동전 1 
+2293번
+*/
+#include<stdio.h>
+
+int n, k;
+int arr[100];
+int Dp[10001];
+
+int main() {
+	scanf("%d %d", &n, &k);
+
+	for (int i = 0; i < n; i++) {
+		scanf("%d", &arr[i]);
+	}
+	Dp[0] = 1;
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 1; j <= k; j++) {
+			if (j - arr[i] >= 0)
+				Dp[j] += Dp[j - arr[i]];
+		}
+	}
+	printf("%d\n", Dp[k]);
+
+	return 0;
+}

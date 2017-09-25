@@ -1,0 +1,43 @@
+/*
+스티커
+9465번
+*/
+
+#include<stdio.h>
+
+int i, j;
+int Dp[2][100000];
+int input[2][100000];
+
+int max(int a, int b){return a > b ? a : b;}
+
+int main() {
+	int Test_case;
+	int n;
+	scanf("%d", &Test_case);
+	while (Test_case--) {
+		scanf("%d", &n);
+		for (int i = 0; i < 2; i++)
+			for (int j = 2; j <= n+1; j++)
+				scanf("%d", &input[i][j]);
+		
+		for (int i = 2; i <= n+1; i++) {
+			Dp[0][i] = max(max(Dp[0][i - 1], Dp[1][i - 1] + input[0][i]), Dp[1][i - 2] + input[0][i]);
+			Dp[1][i] = max(max(Dp[1][i - 1], Dp[0][i - 1] + input[1][i]), Dp[0][i - 2] + input[1][i]);
+		}
+		/*
+		1. 이전 max값
+		2. 이전 대각선 max값 + 선택한 스티커의 값
+		3. 이전 이전의 대각선 max값 + 선택한 스티커의 값
+		들 중에 max값을 구하면서 반복해서 진행한다.
+		*/
+
+		if (Dp[0][n+1] > Dp[1][n+1])
+			printf("%d\n", Dp[0][n+1]);
+		else
+			printf("%d\n", Dp[1][n+1]);
+
+	}
+
+	return 0;
+}

@@ -1,22 +1,32 @@
-#include<cstdio>
+/*
+이항계수3
+11401번
 
-#define mod (int)(1e9+7)
 
-const int MAX_N = 4e6;
-int n, k, fac[MAX_N + 1];
-typedef long long ll;
+메모이제이션과 다이나믹 프로그래밍의 특징은 다음과 같다.
 
-int f(int x, int y) {
-	if (!y) return 1;
-	int t = f(x, y / 2);
-	return (ll)t * t % mod * (y & 1 ? x : 1) % mod;
-}
+1) 메모이제이션이나 다이나믹 프로그래밍 둘다 순환식을 계산하는 방법이라고 할 수 있다.
+2) 모두 동적 계획법의 일종이라고 보기도 한다.
+3) 메모이제이션은 Top down 방식이고 실제 필요한 sub problem을 푼다,
+4) 다이나믹 프로그래밍은 Bottom up 방식이며 재귀에 수반되는 overhead가 없다.
+
+*/
+
+#include<stdio.h>
+
+int binomial01(int n, int k) {
+	if (n == k || k == 0) return 1;
+
+	else
+		return (binomial01(n - 1, k) + binomial01(n - 1, k - 1)) % 1000000007;
+} // 재귀를 사용한 이항계수
+
 
 int main() {
+	int n, k;
 	scanf("%d %d", &n, &k);
-	fac[0] = 1;
-	for (int i = 1; i <= n; i++) 
-		fac[i] = (ll)fac[i - 1] * i % mod;
-	printf("%lld", (ll)fac[n] * f(fac[n - k], mod - 2) % mod*f(fac[k], mod - 2) % mod);
+
+	printf("%d\n", binomial01(n, k) % 1000000007);
+
 	return 0;
 }

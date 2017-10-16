@@ -1,0 +1,72 @@
+/*
+백준 2468번 안전 영역
+
+BFS , DFS
+*/
+
+#include<vector>
+#include<cstdio>
+using namespace std;
+
+int grid[101][101];
+bool visit[101][101];
+int N;
+int dx[4] = { -1, 1, 0, 0 };
+int dy[4] = { 0, 0, -1, 1 };
+int i, j, k;
+class SafetyPlace {
+public:
+	int getTrack() {
+		int ans = 0;
+		for (k = 0; k < 100; k++) { // 강수량에 따른 결과 값 저장
+			int cnt = 0;
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
+					if(grid[i][j] <= k)
+						visit[i][j] = true;
+					visit[i][j] = false;
+				}
+			} // visit 초기화
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
+					if (grid[i][j] > k && visit[i][j] == false) {
+						cnt++;
+						dfs(i, j, cnt);
+					}
+				}
+			}
+			if (cnt > ans) ans = cnt;
+			if (cnt == 0) break;
+		}
+		return ans;
+	}
+
+	void dfs(int x, int y,int safy) {
+
+		visit[x][y] = true;
+
+		for (i = 0; i < 4; i++) {
+			int nx = x + dx[i];
+			int ny = y + dy[i];
+			if (nx >= 0 && nx < N && ny >= 0 && ny < N && visit[nx][ny] == false)
+				dfs(nx, ny, safy);
+		}
+
+	}
+
+};
+
+int main() {
+	scanf("%d", &N);
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N; j++) {
+			scanf("%d", &grid[i][j]);
+		}
+	}
+	
+	SafetyPlace SP;
+
+	printf("%d", SP.getTrack());
+	return 0;
+}

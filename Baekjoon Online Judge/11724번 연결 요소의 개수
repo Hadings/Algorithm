@@ -1,0 +1,57 @@
+/*
+제목:연결 요소의 개수
+hint : 연결된 덩어리
+*/
+
+#include<iostream>
+#include<queue>
+#include<cstdio>
+
+using namespace std;
+
+int n, m;
+int map[1001][1001];
+bool visited[1001];
+bool started;
+int result = 1;
+
+void BFS(int root) {
+	if (visited[root] == 0 && started == true) {
+		result++;
+		visited[root] = true;
+	}
+	else {
+		started = true;
+		visited[root] = true;
+	}
+	queue<int> q;
+	q.push(root);
+	while (!q.empty()) {
+		int now = q.front();
+		q.pop();
+
+		for (int i = 1; i <= n; i++) {
+			if (!visited[i] && map[now][i] == 1) {
+				visited[i] = true;
+				q.push(i);
+			}
+		}
+	}
+}
+
+int main() {
+	scanf("%d %d", &n, &m);
+
+	for (int i = 1; i <= m; i++) {
+		int u, v;
+		scanf("%d %d", &u, &v);
+		map[u][v] = 1;
+		map[v][u] = 1;
+	}
+	for (int i = 1; i <= n; i++) {
+		if (!visited[i])
+			BFS(i);
+	}
+	printf("%d\n", result);
+	return 0;
+}

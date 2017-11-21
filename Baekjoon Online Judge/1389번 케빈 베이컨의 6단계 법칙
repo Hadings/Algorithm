@@ -1,0 +1,87 @@
+/*
+1389번 케빈 베이컨의 6단계 법칙
+
+케빈 베이컨의 수가 가장 작은 사람을 찾으려고 한다.
+
+무방향 그래프에서 모든 정점이 서로 얼마만큼 가까운지(최단경로)를 계산하는 문제.
+
+[해설]
+결국 모든 사람들이 몇단계를 거쳐 알고있는지 알아야 하기 때문에
+플로이드 워설 알고리즘으로 접근 할 수 있다. 또한 사람 수가 최대 100명이기에
+플로이드 워셜 알고리즘의 O(|V|^3)에 의하면 100만번이 최악의 경우이기에 시간 복잡도 면에서도 가능하다.
+
+*/
+
+#include<cstdio>
+#include<iostream>
+#include<queue>
+
+using namespace std;
+#define INF 10000
+
+int ans[101];
+int map[101][101];
+int cnt;
+int n, m;
+
+void printSolution(int dist[][101])
+{
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= n; j++)
+			if (dist[i][j] != INF)
+				ans[i] += dist[i][j];
+
+	int minVal = INF;
+	int minNum;
+
+	for (int i = 1; i <= n; i++)
+	{
+		if (ans[i] < minVal)
+		{
+			minVal = ans[i];
+			minNum = i;
+		}
+	}
+
+	printf("%d", minNum);
+}
+
+void floydWarshall()
+{
+	int dist[101][101];
+	int i, j, k;
+
+	for (i = 1; i <= n; i++)
+		for (j = 1; j <= n; j++)
+			dist[i][j] = map[i][j];
+
+	for (k = 1; k <= n; k++)
+	{
+		for (i = 1; i <= n; i++)
+		{
+			for (j = 1; j <= n; j++)
+			{
+				if (dist[i][k] + dist[k][j] < dist[i][j])
+					dist[i][j] = dist[i][k] + dist[k][j];
+			}
+		}
+	}
+	printSolution(dist);
+}
+
+int main() {
+	scanf("%d %d", &n, &m);
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= n; j++)
+			i == j ? map[i][j] = 0 : map[i][j] = INF;
+
+	for (int i = 1; i <= m; i++) {
+		int u, v;
+		scanf("%d %d", &u, &v);
+		map[u][v] = map[v][u] = 1;
+	}
+
+	floydWarshall();
+	return 0;
+}
+

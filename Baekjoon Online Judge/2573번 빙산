@@ -1,0 +1,113 @@
+/*
+2573번 빙산
+*/
+
+#include<cstdio>
+#include<iostream>
+
+using namespace std;
+
+int n, m;
+int map[301][301];
+int visited[301][301];
+int ans=0;
+int cnt;
+const int dx[] = { -1, 1, 0, 0 };
+const int dy[] = { 0, 0, -1, 1 };
+
+void dfs(int x, int y) {
+	
+	visited[x][y] = 1;
+
+	for (int i = 0; i <4; i++) {
+		int cx = x + dx[i];
+		int cy = y + dy[i];
+
+		if (map[cx][cy] >0 && visited[cx][cy] == 0 && cx >= 1 && cx <= n && cy >= 1 && cy <= n) {
+			dfs(cx, cy);
+		}
+	}
+
+}
+
+void melt(int x, int y) {
+	
+	for (int i = 0; i <4; i++) {
+		int cx = x + dx[i];
+		int cy = y + dy[i];
+
+		if (map[cx][cy] > 0 && cx >= 1 && cx <= n && cy >= 1 && cy <= n) {
+			map[x][y]--;
+			if (map[x][y] < 0) {
+				map[x][y] = 0;
+				visited[x][y] = 1;
+			}
+			if (map[cx][cy] == 0 && visited[cx][cy] == 0)
+				melt(cx, cy);
+		}
+	}
+}
+
+int main() {
+	scanf("%d %d", &n, &m);
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			scanf("%d", &map[i][j]);
+			
+			if (map[i][j] == 0) {
+				visited[i][j] = 1;
+			}
+			visited[i][j] = 0;
+		}
+	}
+	ans = 0;
+	while(1){
+		ans++;
+		cnt = 0;
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= m; j++) {
+				if (map[i][j] == 0) {
+					visited[i][j] = 1;
+				}
+				visited[i][j] = 0;
+			}
+		}
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= m; j++) {
+				if (map[i][j] > 0)
+					melt(i, j);
+			}
+		}
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= m; j++) {
+				if (map[i][j] > 0 && visited[i][j] == 0) {
+					cnt++;
+					dfs(i, j);
+				}
+			}
+		}
+
+		printf("\n");
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= m; j++) {
+				printf("%d ", map[i][j]);
+			}
+			printf("\n");
+		}
+		printf("\n");
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= m; j++) {
+				printf("%d ", visited[i][j]);
+			}
+			printf("\n");
+		}
+
+		if (cnt >= 2)
+			break;
+	}
+	if (cnt == 2)
+		printf("%d\n", ans);
+	else
+		printf("0\n");
+	return 0;
+}

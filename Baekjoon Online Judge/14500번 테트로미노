@@ -1,0 +1,129 @@
+//테트로미노 14500
+#include<iostream>
+#include<algorithm>
+using namespace std;
+#define MAX_SIZE 500
+
+int block[MAX_SIZE][MAX_SIZE];
+int visit[MAX_SIZE][MAX_SIZE];
+int N, M, MAX;
+int dx[4] = { -1, 1, 0, 0 };
+int dy[4] = { 0, 0, -1, 1 };
+
+void dfs(int x, int y, int sum, int d) {
+
+	if (d == 4) {
+		MAX = max(MAX, sum);
+		return;
+	}
+
+	visit[x][y] = 1;
+
+	for (int i = 0; i < 4; i++) {
+
+		int xp = x + dx[i];
+		int yp = y + dy[i];
+
+		if (xp < 0 || yp < 0 || N <= xp || M <= yp) continue;
+		if (visit[xp][yp] == 1) continue;
+
+
+		dfs(xp, yp, sum + block[xp][yp], d + 1);
+	}
+
+	visit[x][y] = 0;
+
+}
+
+int main(void) {
+
+	ios::sync_with_stdio(false);// cin 속도 증가 함수 (실무용)
+
+	cin >> N >> M;
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			cin >> block[i][j];
+		}
+	}
+
+	MAX = 0;
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			dfs(i, j, block[i][j], 1);
+		}
+	}
+
+	// 'ㅏ'
+	int sum;
+
+	for (int k = 0; k < N - 2; k++) {
+		for (int i = 0; i < M - 1; i++) {
+			sum = 0;
+
+			for (int j = k; j < k + 3; j++) {
+				sum += block[j][i];
+
+				if (j == k + 2) {
+					sum += block[j - 1][i + 1];
+				}
+			}
+
+			MAX = max(MAX, sum);
+		}
+	}
+
+	// 'ㅓ'
+	for (int k = 0; k < N - 2; k++) {
+		for (int i = M - 1; 0 < i; i--) {
+			sum = 0;
+
+			for (int j = k; j < k + 3; j++) {
+				sum += block[j][i];
+
+				if (j == k + 2) {
+					sum += block[j - 1][i - 1];
+				}
+			}
+
+			MAX = max(MAX, sum);
+		}
+	}
+
+	// 'ㅗ'
+	for (int k = 0; k< M - 2; k++) {
+		for (int i = 1; i < N; i++) {
+			sum = 0;
+
+			for (int j = k; j < k + 3; j++) {
+				sum += block[i][j];
+
+				if (j == k + 2) {
+					sum += block[i - 1][j - 1];
+				}
+			}
+
+			MAX = max(MAX, sum);
+		}
+	}
+
+	//'ㅜ'
+	for (int k = 0; k < M - 2; k++) {
+		for (int i = 0; i < N - 1; i++) {
+			sum = 0;
+
+			for (int j = k; j < k + 3; j++) {
+				sum += block[i][j];
+
+				if (j == k + 2) {
+					sum += block[i + 1][j - 1];
+				}
+			}
+			MAX = max(MAX, sum);
+		}
+	}
+
+	cout << MAX;
+	return 0;
+}

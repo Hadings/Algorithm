@@ -1,0 +1,31 @@
+/*
+1987번 알파벳
+
+DFS 와 백트랙킹
+
+*/
+
+#include<cstdio>
+#include<iostream>
+
+using namespace std;
+
+int r, c;
+char arr[21][21];
+
+
+void dfs() {
+
+
+}
+
+int main() {
+	scanf("%d %d", &r, &c);
+
+	for (int i = 1; i <= r; i++) {
+		for (int j = 1; j <= c; j++) {
+			scanf("%c", &arr[i][j]);
+		}
+	}
+	return 0;
+}

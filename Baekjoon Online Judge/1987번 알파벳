@@ -5,27 +5,57 @@ DFS 와 백트랙킹
 
 */
 
-#include<cstdio>
-#include<iostream>
-
-using namespace std;
+#include<stdio.h>
 
 int r, c;
 char arr[21][21];
+int visited[21][21] = { 0 };
+int check_arr[1000] = {0};
+const int dx[4] = { 1,-1,0,0 };
+const int dy[4] = { 0,0,1,-1 };
+int result = 0;
+int max = 0;
 
+void dfs(int x,int y) {
+	visited[y][x] = 1;
+	
+	for (int i = 0; i < 4; i++) {
+		int cx = x + dx[i];
+		int cy = y + dy[i];
+		int flag = 0;
 
-void dfs() {
+		if (result > max) max = result;
 
+		if (cx <0 || cx >r-1 || cy <0 || cy >c-1) continue;
+		if (visited[cy][cx] == 0) {
+			for (int k = 0; k <= result; k++) {
+				if (check_arr[k] == arr[cy][cx])
+					flag = 1;
+			}
+			check_arr[result] = arr[cy][cx];
+			if (flag == 0) {
+				result++;
+				dfs(cx, cy);
+			}
+		}
 
+	}
 }
 
 int main() {
 	scanf("%d %d", &r, &c);
 
 	for (int i = 1; i <= r; i++) {
-		for (int j = 1; j <= c; j++) {
-			scanf("%c", &arr[i][j]);
-		}
+		scanf("%s", &arr[i]);
 	}
+	check_arr[0] = arr[0][0];
+	result++;
+	dfs(0,0);
+
+	/*for (int i = 0; i < max; i++) {
+		printf("%c ", check_arr[i]);
+	}*/
+
+	printf("%d\n", max);
 	return 0;
 }
